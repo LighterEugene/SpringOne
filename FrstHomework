@@ -1,1 +1,104 @@
+package ru.geekbrains;
+
+import ru.geekbrains.persist.Product;
+import ru.geekbrains.persist.ProductRepository;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(urlPatterns = "/product/*")
+public class ProductServlet extends HttpServlet {
+
+    private ProductRepository productRepository;
+
+    @Override
+    public void init() throws ServletException {
+        productRepository = (ProductRepository) getServletContext().getAttribute("productRepository");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter wr = resp.getWriter();
+        if (req.getParameter("id") != null) {
+            // TODO
+        } else if (req.getPathInfo() == null || req.getPathInfo().equals("/")) {
+            wr.println("<table>");
+            wr.println("<a href=\"http://localhost:8080/servlet-app/product/id=1\">к первому продукту отдельно;</a>");
+            wr.println("<a href=\"http://localhost:8080/servlet-app/product/id=2\">ко второму продукту отдельно;</a>");
+            wr.println("<a href=\"http://localhost:8080/servlet-app/product/id=3\">к третьему продукту отдельно;</a>");
+            wr.println("<tr>");
+            wr.println("<th>Id</th>");
+            wr.println("<th>Name</th>");
+            wr.println("</tr>");
+
+            for (Product product : productRepository.findAll()) {
+                wr.println("<tr>");
+                wr.println("<td>" + product.getId() + "</td>");
+                wr.println("<td>" + product.getName() + "</td>");
+
+                wr.println("</tr>");
+            }
+
+            wr.println("</table>");
+        }
+
+        else if (req.getPathInfo() == null || req.getPathInfo().equals("/id=1")) {
+            Product product;
+            wr.println("<table>");
+
+            wr.println("<tr>");
+            wr.println("<th>Id</th>");
+            wr.println("<th>Name</th>");
+            wr.println("</tr>");
+
+            product = productRepository.findById(1);
+                wr.println("<tr>");
+                wr.println("<td>" + product.getId() + "</td>");
+                wr.println("<td>" + product.getName() + "</td>");
+
+                wr.println("</tr>");
+            }
+        else if (req.getPathInfo() == null || req.getPathInfo().equals("/id=2")) {
+            Product product;
+            wr.println("<table>");
+
+            wr.println("<tr>");
+            wr.println("<th>Id</th>");
+            wr.println("<th>Name</th>");
+            wr.println("</tr>");
+
+            product = productRepository.findById(2);
+            wr.println("<tr>");
+            wr.println("<td>" + product.getId() + "</td>");
+            wr.println("<td>" + product.getName() + "</td>");
+
+            wr.println("</tr>");
+        }
+        else if (req.getPathInfo() == null || req.getPathInfo().equals("/id=3")) {
+            Product product;
+            wr.println("<table>");
+
+            wr.println("<tr>");
+            wr.println("<th>Id</th>");
+            wr.println("<th>Name</th>");
+            wr.println("</tr>");
+
+            product = productRepository.findById(3);
+            wr.println("<tr>");
+            wr.println("<td>" + product.getId() + "</td>");
+            wr.println("<td>" + product.getName() + "</td>");
+
+            wr.println("</tr>");
+        }
+            wr.println("</table>");
+
+        }
+
+
+    }
 
